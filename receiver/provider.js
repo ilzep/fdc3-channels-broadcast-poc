@@ -45,7 +45,6 @@ function interopOverride(InteropBroker, provider, options, ...args) {
 
 					if (hasPlatformContextGroup) {
 						// connect to sender using its UUID
-						// QUESTION - we keep making new connections to sender. Is that necessary?
 						const colorClient = fin.Interop.connectSync(this.externalBroker, {});
 						await colorClient.joinContextGroup(externalContextGroupInfo.id);
 						
@@ -53,14 +52,8 @@ function interopOverride(InteropBroker, provider, options, ...args) {
 
 							await platformInteropClient.joinContextGroup(externalContextGroupInfo.id);
                             console.log(`NEW MESSAGE: ${externalContextGroupInfo.id} channel ${JSON.stringify(context)}`);
-							
-							// QUESTION - assumption - no information has to be sent back to the sender if we do not wish to
-							// const newContext = context._clientInfo?.uuid
-							// 	? context
-							// 	: { ...context, _clientInfo: { uuid: this.externalBroker } };
-							// await platformInteropClient.setContext(newContext);
 
-							// QUESTION - we would like to now send messages to our application (main window).
+							// QUESTION - we would like to now send messages to our application view (main window).
 							// Would this be an appropriate way of doing it?
 							context.color = externalContextGroupInfo.id;
 							const identity = {uuid: fin.me.uuid, name: 'platform_receiver_window_1'};

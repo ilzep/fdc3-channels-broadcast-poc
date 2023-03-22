@@ -9,19 +9,44 @@
   <body  style="background: #00800059;">
     <h1>Sender</h1>
     <br />
-    <button onclick="broadcastContext('green')">Broadcast Green</button>
-    <button onclick="broadcastContext('purple')">Broadcast purple</button>
-    <button onclick="broadcastContext('orange')">Broadcast orange</button>
-    <button onclick="broadcastContext('red')">Broadcast red</button>
-    <button onclick="broadcastContext('pink')">Broadcast pink</button>
+    <div id="currentGroup">Current Context Group</div>
+    <div id="contextGroup"></div>
+    </div>
+    <button onclick="broadcastContext()">Broadcast</button>
+
 
     <script>
-    
-      function broadcastContext(colour) {
-        fdc3.joinChannel(colour);
+      var selectedContextGroup;
+      async function main() {
+        var platformInteropClient = fin.Interop.connectSync(fin.me.uuid, {});
+        var contexts = await platformInteropClient.getContextGroups();
+
+        setCurrentContextGroup(contexts[0]);
+
+        contexts.forEach((context) => {
+            let groupButton = document.createElement('button');
+            groupButton.innerHTML = `Join Group: ${JSON.stringify(context.id)}`;
+            groupButton.style = `background: ${context.id}`;
+            const clickHandler = async () => {
+              setCurrentContextGroup(context);
+            }
+            groupButton.addEventListener('click', clickHandler);
+            document.getElementById('contextGroup').appendChild(groupButton);
+          });
+      }
+
+      function setCurrentContextGroup(newContextGroup) {
+        selectedContextGroup = newContextGroup;
+        document.getElementById('currentGroup').style = `background: ${selectedContextGroup.id}`;
+        fdc3.joinChannel(selectedContextGroup.id);
+      }
+      
+      function broadcastContext() {
         const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}};
         fdc3.broadcast(context);
       }
+
+      main();
     </script>
   </body>
 </html>

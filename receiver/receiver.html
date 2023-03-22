@@ -8,31 +8,61 @@
   </head>
   <body  style="background: #8fa4e959;">
     <h1>Receiver main window</h1>
+    <div id="contextGroup">Current Context Group</div>
     <div id="responseText"></div>
 
     <script>
       var platformInteropClient;
       var contexts;
-      // QUESTION - can I set/get current context. 
-      // joinContextGroup - to set?
-      // how can I tell which context I have joined in here? 
-      fdc3.addIntentListener('ViewChart', (context) => {
-        let responseElement = document.createElement('div');
-        responseElement.innerHTML = JSON.stringify(context);
-        const current = contexts.find(c => c.id === context.color);
-        responseElement.style = `background: ${current?.displayMetadata?.color}`;
-        document.getElementById('responseText').appendChild(responseElement);
-      });
-      async function setup(identity) {
-        console.log(`[receiver] setup`);
-      }
+      var currentContextGroup;
 
       async function main() { 
+        // get available context groups
         platformInteropClient = fin.Interop.connectSync(fin.me.uuid, {});
         contexts = await platformInteropClient.getContextGroups();
+
+        // default to first context group in the list
+        currentContextGroup = contexts[0];
+        await platformInteropClient.joinContextGroup(currentContextGroup.id);
+        document.getElementById('contextGroup').style = `background: ${currentContextGroup.id}`;
+
+        // set up buttons to switch between context groups
+        setUpContextGroupChange();
+      }
+
+      function setUpContextGroupChange() {
+        contexts.forEach((context) => {
+          let groupButton = document.createElement('button');
+          groupButton.innerHTML = `Join Group: ${JSON.stringify(context.id)}`;
+          groupButton.style = `background: ${context.id}`;
+          const clickHandler = async () => {
+            currentContextGroup = context;
+            document.getElementById('contextGroup').style = `background: ${currentContextGroup.id}`;
+            await platformInteropClient.joinContextGroup(currentContextGroup.id);
+          }
+          groupButton.addEventListener('click', clickHandler);
+          document.getElementById('responseText').appendChild(groupButton);
+        });
+      }
+
+      function handleIntent(context) {
+          if(context.color === currentContextGroup.id) {
+            let responseElement = document.createElement('div');
+            responseElement.innerHTML = JSON.stringify(context);
+            responseElement.style = `background: ${currentContextGroup.id}`;
+            document.getElementById('responseText').appendChild(responseElement);
+          } else {
+            let responseElement = document.createElement('div');
+            responseElement.innerHTML = JSON.stringify(`Message received for ${context.color}, ignored, since not in the same context group`);
+            document.getElementById('responseText').appendChild(responseElement);
+          }
       }
 
       main();
+
+      fdc3.addIntentListener('ViewChart', (context) => {
+        handleIntent(context);
+      });
     </script>
   </body>
 </html>
