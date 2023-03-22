@@ -3,10 +3,15 @@
 
 
 ## Running apps
+```
 npm run start:sender
+
 npm run start:receiver
 
+
 npm run fin:sender
+
 npm run fin:receiver
+```
 
 ![Screenshot](FDC3_POC_screenshot.PNG)
