@@ -11,16 +11,26 @@
     <div id="responseText"></div>
 
     <script>
+      var platformInteropClient;
+      var contexts;
+      // QUESTION - can I set/get current context. 
+      // joinContextGroup - to set?
+      // how can I tell which context I have joined in here? 
       fdc3.addIntentListener('ViewChart', (context) => {
         let responseElement = document.createElement('div');
         responseElement.innerHTML = JSON.stringify(context);
+        const current = contexts.find(c => c.id === context.color);
+        responseElement.style = `background: ${current?.displayMetadata?.color}`;
         document.getElementById('responseText').appendChild(responseElement);
       });
       async function setup(identity) {
         console.log(`[receiver] setup`);
       }
 
-      async function main() { }
+      async function main() { 
+        platformInteropClient = fin.Interop.connectSync(fin.me.uuid, {});
+        contexts = await platformInteropClient.getContextGroups();
+      }
 
       main();
     </script>
