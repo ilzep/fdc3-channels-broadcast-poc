@@ -50,8 +50,7 @@ function interopOverride(InteropBroker, provider, options, ...args) {
 						await colorClient.joinContextGroup(externalContextGroupInfo.id);
 						
 						const contextHandler = async context => {
-							// QUESTION - we would like to now send messages to the appliation (main window).
-							// What would be the best way to do this?
+
 							await platformInteropClient.joinContextGroup(externalContextGroupInfo.id);
                             console.log(`NEW MESSAGE: ${externalContextGroupInfo.id} channel ${JSON.stringify(context)}`);
 							
@@ -60,6 +59,12 @@ function interopOverride(InteropBroker, provider, options, ...args) {
 							// 	? context
 							// 	: { ...context, _clientInfo: { uuid: this.externalBroker } };
 							// await platformInteropClient.setContext(newContext);
+
+							// QUESTION - we would like to now send messages to our application (main window).
+							// Would this be an appropriate way of doing it?
+							const identity = {uuid: fin.me.uuid, name: 'platform_receiver_window_1'};
+							const intent = {name:'ViewChart', context};
+							await super.setIntentTarget(intent, identity);
 						};
 						await colorClient.addContextHandler(contextHandler);
 						// return the connected context group and corresponded color client.
