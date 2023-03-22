@@ -19,7 +19,7 @@
     
       function broadcastContext(colour) {
         fdc3.joinChannel(colour);
-        const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}, color: colour };
+        const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}};
         fdc3.broadcast(context);
       }
     </script>

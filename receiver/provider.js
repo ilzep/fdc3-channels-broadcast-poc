@@ -62,6 +62,7 @@ function interopOverride(InteropBroker, provider, options, ...args) {
 
 							// QUESTION - we would like to now send messages to our application (main window).
 							// Would this be an appropriate way of doing it?
+							context.color = externalContextGroupInfo.id;
 							const identity = {uuid: fin.me.uuid, name: 'platform_receiver_window_1'};
 							const intent = {name:'ViewChart', context};
 							await super.setIntentTarget(intent, identity);
