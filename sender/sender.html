@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sender</title>
+  </head>
+  <body  style="background: #00800059;">
+    <h1>Sender</h1>
+    <br />
+    <button onclick="broadcastContext('green')">Broadcast Green</button>
+    <button onclick="broadcastContext('purple')">Broadcast purple</button>
+    <button onclick="broadcastContext('orange')">Broadcast orange</button>
+    <button onclick="broadcastContext('red')">Broadcast red</button>
+    <button onclick="broadcastContext('pink')">Broadcast pink</button>
+
+    <script>
+      
+
+      function broadcastContext(colour) {
+        fdc3.joinChannel(colour);
+        const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}, color: colour };
+        fdc3.broadcast(context);
+      }
+    </script>
+  </body>
+</html>

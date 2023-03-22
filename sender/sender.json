@@ -1,0 +1,23 @@
+{
+  "devtools_port": 9090,
+  "runtime": {
+    "arguments": "--security-realm=platform_sender_uuid --enable-mesh",
+    "version": "stable"
+  },
+  "platform": {
+    "uuid": "platform_sender_uuid",
+    "defaultWindowOptions": {
+      "fdc3InteropApi": "2.0"
+    },
+    "providerUrl": "http://localhost:4000/sender/provider.html",
+    "autoShow": false
+  },
+  "snapshot": {
+    "windows": [
+      {
+        "name": "platform_sender_window_1",
+        "url": "http://localhost:4000/sender/sender.html"
+      }
+    ]
+  }
+}
