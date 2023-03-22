@@ -16,8 +16,7 @@
     <button onclick="broadcastContext('pink')">Broadcast pink</button>
 
     <script>
-      
-
+    
       function broadcastContext(colour) {
         fdc3.joinChannel(colour);
         const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}, color: colour };

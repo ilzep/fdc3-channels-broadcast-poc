@@ -11,42 +11,16 @@
     <div id="responseText"></div>
 
     <script>
+      fdc3.addIntentListener('ViewChart', (context) => {
+        let responseElement = document.createElement('div');
+        responseElement.innerHTML = JSON.stringify(context);
+        document.getElementById('responseText').appendChild(responseElement);
+      });
       async function setup(identity) {
         console.log(`[receiver] setup`);
-
-        // https://developer.openfin.co/docs/javascript/stable/Interop.html#.connectSync
-        // connect to sender app's Interop broker (here identity = sender app's uuid)
-        // const client = await fin.Interop.connectSync(identity);
-
-        // client.joinContextGroup('green');
-
-        // client.addContextHandler((context) => {
-        //   let responseElement = document.createElement('div');
-        //   responseElement.innerHTML = JSON.stringify(context);
-        //   document.getElementById('responseText').appendChild(responseElement);
-        // });
       }
 
-      async function main() {
-        // sender app's uuid
-        // const identity = 'platform_sender_uuid';
-
-        // const platform = fin.Platform.wrapSync({ uuid: identity });
-
-        // if (await platform.Application.isRunning()) {
-        //   console.log(`[receiver] sender app is running`);
-        //   await this.setup(identity);
-        // }
-
-        // await platform.on('platform-api-ready', async () => {
-        //   console.log(`[receiver] sender app platform api is ready`);
-        //   await this.setup(identity);
-        // });
-
-        // await platform.Application.once('closed', () => {
-        //   console.log(`[receiver] sender app closed`);
-        // });
-      }
+      async function main() { }
 
       main();
     </script>
