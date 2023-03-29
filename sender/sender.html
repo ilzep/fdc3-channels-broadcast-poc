@@ -12,8 +12,8 @@
     <div id="currentGroup">Current Context Group</div>
     <div id="contextGroup"></div>
     </div>
+    <button onclick="setupConnection()">Connect to Receiver</button>
     <button onclick="broadcastContext()">Broadcast</button>
-
 
     <script>
       var selectedContextGroup;
@@ -35,6 +35,12 @@
           });
       }
 
+      function setupConnection() {
+        // Create a connection with the receiver application
+        // Sender is not using this connection, but will allow receiver to validate the senders URL
+        var receiverplatformInteropClient = fin.Interop.connectSync('platform_receiver', {token: 'connection_token'});
+      }
+
       function setCurrentContextGroup(newContextGroup) {
         selectedContextGroup = newContextGroup;
         document.getElementById('currentGroup').style = `background: ${selectedContextGroup.id}`;
@@ -42,7 +48,8 @@
       }
       
       function broadcastContext() {
-        const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}};
+        console.log('BROADCASTING MESSAGE');
+        const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}, time: Date.now()};
         fdc3.broadcast(context);
       }
 
