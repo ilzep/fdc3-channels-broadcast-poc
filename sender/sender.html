@@ -48,7 +48,6 @@
       }
       
       function broadcastContext() {
-        console.log('BROADCASTING MESSAGE');
         const context = { type: 'fdc3.instrument', id: {BBG : 'EURUSD Curncy'}, time: Date.now()};
         fdc3.broadcast(context);
       }
